@@ -1,4 +1,4 @@
-module httpclient
+module github.com/LuckyTea/httpclient
 
 go 1.16
 
