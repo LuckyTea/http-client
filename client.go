@@ -21,7 +21,7 @@ func New(retry int, timeout time.Duration) Client {
 	}
 }
 
-//  NewDefault - return new http client with default params & backoff.
+// NewDefault - return new http client with default params & backoff.
 func NewDefault() Client {
 	return Client{
 		RetryMax: DefaultRetry,
@@ -34,7 +34,7 @@ func NewDefault() Client {
 	}
 }
 
-//  NewDefault - return new http client with default params & backoff.
+// NewDefault - return new http client with default params & backoff.
 func NewWithMetric(domain string, latencyMetric *prometheus.HistogramVec) Client {
 	return Client{
 		RetryMax:      DefaultRetry,
@@ -47,4 +47,8 @@ func NewWithMetric(domain string, latencyMetric *prometheus.HistogramVec) Client
 			DisableHeaderNamesNormalizing: true,
 		},
 	}
+}
+
+func (c *Client) SetTimeout(timeout time.Duration) {
+	c.Timeout = timeout
 }
