@@ -34,7 +34,7 @@ func NewDefault() Client {
 	}
 }
 
-// NewDefault - return new http client with default params & backoff.
+// NewWithMetric - return new http client with default params & backoff.
 func NewWithMetric(domain string, latencyMetric *prometheus.HistogramVec) Client {
 	return Client{
 		RetryMax:      DefaultRetry,
