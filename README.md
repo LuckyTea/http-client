@@ -1,12 +1,12 @@
 # http-client
 
-Simple golang module with fasthttp client and prometheus metric.
+Simple golang package with fasthttp client and prometheus metric.
 
 ## Example
 
 ```go
 // metric
-var NetSourcesLatencyHistogram = func() *prometheus.HistogramVec {
+var netSourcesLatencyHistogram = func() *prometheus.HistogramVec {
     var metric = prometheus.NewHistogramVec(
         prometheus.HistogramOpts{
             Namespace: "service",
@@ -21,7 +21,7 @@ var NetSourcesLatencyHistogram = func() *prometheus.HistogramVec {
 }()
 
 // create
-client := httpclient.NewWithMetric("example", metrics.NetSourcesLatencyHistogram)
+client := httpclient.NewWithMetric("example", netSourcesLatencyHistogram)
 
 // request
 err := p.client.DoTimeout(req, resp)
