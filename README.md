@@ -21,11 +21,10 @@ var netSourcesLatencyHistogram = func() *prometheus.HistogramVec {
 }()
 
 // create
-client := httpclient.NewWithMetric("example", netSourcesLatencyHistogram)
+client := httpclient.NewWithMetric("domain", netSourcesLatencyHistogram)
 
 // request
-err := p.client.DoTimeout(req, resp)
-if err != nil {
+if err := p.client.DoTimeout(req, resp); err != nil {
     // error handling
 }
 ```

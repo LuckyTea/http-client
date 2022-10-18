@@ -17,7 +17,8 @@ const (
 	defaultBackoffMaxTime = 2 * time.Second
 )
 
-// Client http.
+// Client is a convenient API to make HTTP calls.
+// Client also handles automatically retrying failed HTTP requests.
 type Client struct {
 	RetryMax      int              // Количество попыток запроса.
 	Timeout       time.Duration    // Таймаут для http запроса.
