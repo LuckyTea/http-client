@@ -32,5 +32,5 @@ type Client struct {
 type Backoff struct {
 	Min       time.Duration
 	Max       time.Duration
-	Calculace func(int) time.Duration
+	Calculate func(int) time.Duration
 }

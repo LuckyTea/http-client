@@ -9,7 +9,7 @@ import (
 func NewBackoff(min, max time.Duration) *Backoff {
 	b := Backoff{Min: min, Max: max}
 
-	b.Calculace = b.defaultBackoff
+	b.Calculate = b.defaultBackoff
 
 	return &b
 }

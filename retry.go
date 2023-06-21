@@ -15,7 +15,7 @@ func (c *Client) CheckRetryWithBackoff(try int) bool {
 		return false
 	}
 
-	time.Sleep(c.Backoff.Calculace(try))
+	time.Sleep(c.Backoff.Calculate(try))
 
 	return true
 }
