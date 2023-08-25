@@ -9,10 +9,8 @@ import (
 
 // Do performs the given http request and fills the given http response.
 func (c *Client) Do(req *fasthttp.Request, resp *fasthttp.Response) error {
-	if c.latencyMetric != nil {
-		defer func(start time.Time) {
-			c.latencyMetric.WithLabelValues(c.domain).Observe(time.Since(start).Seconds())
-		}(time.Now())
+	if c.latencyFunc != nil {
+		defer c.latencyFunc(time.Now(), c.domain)
 	}
 
 	return c.HTTP.Do(req, resp)
@@ -21,10 +19,8 @@ func (c *Client) Do(req *fasthttp.Request, resp *fasthttp.Response) error {
 // DoTimeout performs the given request and waits for response during
 // the given timeout duration.
 func (c *Client) DoTimeout(req *fasthttp.Request, resp *fasthttp.Response) error {
-	if c.latencyMetric != nil {
-		defer func(start time.Time) {
-			c.latencyMetric.WithLabelValues(c.domain).Observe(time.Since(start).Seconds())
-		}(time.Now())
+	if c.latencyFunc != nil {
+		defer c.latencyFunc(time.Now(), c.domain)
 	}
 
 	return c.HTTP.DoTimeout(req, resp, c.Timeout)
@@ -33,10 +29,8 @@ func (c *Client) DoTimeout(req *fasthttp.Request, resp *fasthttp.Response) error
 // DoContext perform the given request with ctx deadline or waits for response during
 // the given timeout duration.
 func (c *Client) DoContext(ctx context.Context, req *fasthttp.Request, resp *fasthttp.Response) error {
-	if c.latencyMetric != nil {
-		defer func(start time.Time) {
-			c.latencyMetric.WithLabelValues(c.domain).Observe(time.Since(start).Seconds())
-		}(time.Now())
+	if c.latencyFunc != nil {
+		defer c.latencyFunc(time.Now(), c.domain)
 	}
 
 	deadline, ok := ctx.Deadline()

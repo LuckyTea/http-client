@@ -3,7 +3,6 @@ package httpclient
 import (
 	"time"
 
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/valyala/fasthttp"
 )
 
@@ -20,12 +19,12 @@ const (
 // Client is a convenient API to make HTTP calls.
 // Client also handles automatically retrying failed HTTP requests.
 type Client struct {
-	RetryMax      int              // Количество попыток запроса.
-	Timeout       time.Duration    // Таймаут для http запроса.
-	Backoff       *Backoff         // Рассчёт времени ожидания между попытками запроса.
-	HTTP          *fasthttp.Client // HTTP клиент.
-	latencyMetric *prometheus.HistogramVec
-	domain        string
+	RetryMax    int              // Количество попыток запроса.
+	Timeout     time.Duration    // Таймаут для http запроса.
+	Backoff     *Backoff         // Рассчёт времени ожидания между попытками запроса.
+	HTTP        *fasthttp.Client // HTTP клиент.
+	latencyFunc func(start time.Time, domain string)
+	domain      string
 }
 
 // Backoff - provide essention backoff parameters.

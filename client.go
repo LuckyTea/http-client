@@ -36,12 +36,34 @@ func NewDefault() Client {
 
 // NewWithMetric - return new http client with default params & backoff.
 func NewWithMetric(domain string, latencyMetric *prometheus.HistogramVec) Client {
+	client := Client{
+		RetryMax: DefaultRetry,
+		Timeout:  DefaultTimeout,
+		Backoff:  NewBackoff(defaultBackoffMinTime, defaultBackoffMaxTime),
+		domain:   domain,
+		HTTP: &fasthttp.Client{
+			NoDefaultUserAgentHeader:      true,
+			DisableHeaderNamesNormalizing: true,
+		},
+	}
+
+	if latencyMetric != nil {
+		client.latencyFunc = func(start time.Time, domain string) {
+			latencyMetric.WithLabelValues(domain).Observe(time.Since(start).Seconds())
+		}
+	}
+
+	return client
+}
+
+// NewWithMetricFunc - return new http client with default params & backoff.
+func NewWithMetricFunc(domain string, latencyFunc func(start time.Time, domain string)) Client {
 	return Client{
-		RetryMax:      DefaultRetry,
-		Timeout:       DefaultTimeout,
-		Backoff:       NewBackoff(defaultBackoffMinTime, defaultBackoffMaxTime),
-		domain:        domain,
-		latencyMetric: latencyMetric,
+		RetryMax:    DefaultRetry,
+		Timeout:     DefaultTimeout,
+		Backoff:     NewBackoff(defaultBackoffMinTime, defaultBackoffMaxTime),
+		latencyFunc: latencyFunc,
+		domain:      domain,
 		HTTP: &fasthttp.Client{
 			NoDefaultUserAgentHeader:      true,
 			DisableHeaderNamesNormalizing: true,
